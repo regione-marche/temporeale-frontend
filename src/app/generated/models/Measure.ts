@@ -1,0 +1,16 @@
+/*
+ * SPDX-License-Identifier: EUPL-1.2
+ * Copyright: 2026 Regione Marche
+ */
+/* generated using openapi-typescript-codegen -- do no edit */
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+
+export type Measure = {
+    id?: number;
+    description?: string;
+    label?: string;
+    descrizione_annali?: string;
+};
+

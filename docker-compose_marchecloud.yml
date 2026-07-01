@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  frontend:
+    # Se vuoi costruire l'immagine ogni volta:
+    build:
+      context: .
+      dockerfile: Dockerfile_marcheCloud
+    # Oppure usa l'immagine taggata se preferisci
+    # image: temporeale-fe
+    container_name: temporeale-fe
+    restart: unless-stopped
+    ports:
+      - "4200:80"
+    environment:
+      # Configura le URL per il backend e keycloak all'interno della rete Docker
+      - BACKEND_URL=http://temporeale-backend:8083  # Cambia la porta da 8080 a 8083
+      - KEYCLOAK_URL=http://temporeale-keycloak:8080
+    networks:
+      - temporeale-net
+
+networks:
+  temporeale-net:
+    name: temporealev2-backend_temporeale-net
+    external: true

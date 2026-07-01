@@ -1,0 +1,18 @@
+/*
+ * SPDX-License-Identifier: EUPL-1.2
+ * Copyright: 2026 Regione Marche
+ */
+.disclaimer-page-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 991px) {
+  .disclaimer-page-wrapper .card {
+    border: none;
+    box-shadow: none;
+  }
+}
+

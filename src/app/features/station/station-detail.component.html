@@ -1,0 +1,174 @@
+<!--
+SPDX-License-Identifier: EUPL-1.2
+Copyright: 2026 Regione Marche
+-->
+<div class="page-container" *ngIf="station">
+    <!-- Sidebar -->
+    <aside class="sidebar-panel">
+
+        <!-- Accordion Item: Informazioni -->
+        <div class="sidebar-accordion-item">
+            <button type="button" class="sidebar-accordion-header d-lg-none" (click)="toggleAccordion('info')"
+                [class.active]="openedAccordion === 'info'" aria-label="Espandi Informazioni">
+                <it-icon name="info-circle" size="sm"></it-icon>
+                <span>Informazioni</span>
+                <it-icon [name]="openedAccordion === 'info' ? 'close' : 'chevron-down'" size="sm" class="ms-auto accordion-chevron"></it-icon>
+            </button>
+            <div class="sidebar-accordion-content" [class.open]="openedAccordion === 'info'">
+                <div class="pt-3 pt-lg-0 mb-4">
+                    <h1 class="h6 mb-1 primary-color">{{env.homePageReale}}</h1>
+                    <p class="small sidebar-realtime-text">{{env.homePagesubreal}}</p>
+                    <button type="button" class="sidebar-disclaimer-link" (click)="disclaimerModal.show()">
+                        Disclaimer
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider d-none d-lg-block">
+
+        <!-- Accordion Item: Misura -->
+        <div class="sidebar-accordion-item">
+            <button type="button" class="sidebar-accordion-header d-lg-none" (click)="toggleAccordion('measure')"
+                [class.active]="openedAccordion === 'measure'" aria-label="Espandi Seleziona misura">
+                <it-icon name="funnel" size="sm"></it-icon>
+                <span>Seleziona misura</span>
+                <it-icon [name]="openedAccordion === 'measure' ? 'close' : 'chevron-down'" size="sm" class="ms-auto accordion-chevron"></it-icon>
+            </button>
+            <div class="sidebar-accordion-content" [class.open]="openedAccordion === 'measure'">
+                <div class="form-group sensore pt-0 pb-3 py-lg-0">
+                    <label class="active fw-bold mb-2 d-none d-lg-block" id="station-sensor-label">Seleziona
+                        misura</label>
+                    <div class="sensor-icon-grid" role="group" aria-labelledby="station-sensor-label">
+                        <div class="sensor-icon-btn" *ngFor="let opt of sensorIconOptions; trackBy: trackBySensor"
+                            [class.sensor-icon-btn--active]="selectedSensor === opt.value"
+                            [attr.aria-pressed]="selectedSensor === opt.value" (click)="onSensorSelect(opt.value)"
+                            (mousedown)="onSensorSelect(opt.value)" role="button" tabindex="0"
+                            (keydown.enter)="onSensorSelect(opt.value)"
+                            (keydown.space)="$event.preventDefault(); onSensorSelect(opt.value)">
+                            <span class="sensor-icon-btn__icon-wrap" aria-hidden="true">
+                                <i [class]="opt.weatherIconClass + ' sensor-icon-btn__icon-wi'"></i>
+                            </span>
+                            <span class="sensor-icon-btn__label">{{ opt.text }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group misura" *ngIf="env.showMeasureSelect">
+                    <it-select label="Misura" [(ngModel)]="selectedMeasure" (ngModelChange)="loadHistoric()"
+                        [options]="measureOptions">
+                    </it-select>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider d-none d-lg-block">
+
+        <!-- Accordion Item: Periodo -->
+        <div class="sidebar-accordion-item">
+            <button type="button" class="sidebar-accordion-header d-lg-none" (click)="toggleAccordion('period')"
+                [class.active]="openedAccordion === 'period'" aria-label="Espandi Periodo">
+                <it-icon name="calendar" size="sm"></it-icon>
+                <span>Periodo</span>
+                <it-icon [name]="openedAccordion === 'period' ? 'close' : 'chevron-down'" size="sm" class="ms-auto accordion-chevron"></it-icon>
+            </button>
+            <div class="sidebar-accordion-content" [class.open]="openedAccordion === 'period'">
+                <div class="form-group periodo pt-0 pb-3 py-lg-0">
+                    <label class="active fw-bold mb-2 d-none d-lg-block" id="station-period-label">Periodo</label>
+                    <div class="sensor-icon-grid" role="group" aria-labelledby="station-period-label">
+                        <div class="sensor-icon-btn" *ngFor="let opt of periodIconOptions; trackBy: trackByPeriod"
+                            [class.sensor-icon-btn--active]="hoursBack === opt.value"
+                            [attr.aria-pressed]="hoursBack === opt.value" (click)="onPeriodSelect(opt.value)"
+                            (mousedown)="onPeriodSelect(opt.value)" role="button" tabindex="0"
+                            (keydown.enter)="onPeriodSelect(opt.value)"
+                            (keydown.space)="$event.preventDefault(); onPeriodSelect(opt.value)">
+                            <span class="sensor-icon-btn__icon-wrap" aria-hidden="true">
+                                <i [class]="opt.iconClass + ' sensor-icon-btn__icon-wi'"></i>
+                            </span>
+                            <span class="sensor-icon-btn__label">{{ opt.text }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="floating-nav-buttons p-3">
+            <ng-container *ngIf="fromSource === 'profile'">
+                <button itButton="outline-primary" size="sm" type="button" (click)="navigateToProfile()" class="btn">
+                    <it-icon name="files" size="sm" class="me-lg-1"></it-icon>
+                    <span>Anagrafica</span>
+                </button>
+                <button itButton="outline-primary" size="sm" type="button" (click)="navigateToHomeMap()" class="btn">
+                    <it-icon name="map-marker-circle" size="sm" class="me-lg-1"></it-icon>
+                    <span>Mappa</span>
+                </button>
+            </ng-container>
+            <ng-container *ngIf="fromSource === 'map'">
+                <button itButton="outline-primary" size="sm" type="button" (click)="navigateToHomeMap()" class="btn">
+                    <it-icon name="map-marker-circle" size="sm" class="me-lg-1"></it-icon>
+                    <span>Mappa</span>
+                </button>
+            </ng-container>
+            <ng-container *ngIf="fromSource === 'table'">
+                <button itButton="outline-primary" size="sm" type="button" (click)="navigateToHomeTable()" class="btn">
+                    <it-icon name="list" size="sm" class="me-lg-1"></it-icon>
+                    <span>Torna alla tabella</span>
+                </button>
+            </ng-container>
+            <ng-container *ngIf="fromSource === null">
+                <button itButton="outline-primary" size="sm" type="button" (click)="navigateToProfile()" class="btn">
+                    <it-icon name="files" size="sm" class="me-lg-1"></it-icon>
+                    <span>Anagrafica</span>
+                </button>
+                <button itButton="outline-primary" size="sm" type="button" (click)="navigateToHomeMap()" class="btn">
+                    <it-icon name="map-marker-circle" size="sm" class="me-lg-1"></it-icon>
+                    <span>Mappa</span>
+                </button>
+            </ng-container>
+        </div>
+        <div *ngIf="historic.length===0 && !isLoading" class="alert alert-info m-4 text-center">
+            Selezionare una misura
+        </div>
+
+        <div class="chart-wrapper position-relative" [class.d-none]="historic.length === 0 && !isLoading">
+            <div *ngIf="isLoading"
+                class="loading-overlay d-flex justify-content-center align-items-center position-absolute w-100 h-100 bg-white bg-opacity-75"
+                style="z-index: 10;">
+                <it-spinner></it-spinner>
+            </div>
+            <div id="chart-container" class="chart-container w-100" [style.opacity]="isLoading ? '0.5' : '1'">
+            </div>
+
+            <div class="action-buttons-overlay p-4">
+                <button itButton="primary" class="w-100 justify-content-center btn" (click)="loadHistoric()">
+                    <it-icon name="refresh" size="sm" class="d-lg-none me-lg-1"></it-icon>
+                    <span class="d-none d-lg-inline">Refresh</span>
+                </button>
+                <it-dropdown class="w-100" #exportDropdown="itDropdown" color="info" [dark]="isDark"
+                    [direction]="menuPlacement" [fullWidth]="true">
+                    <button itButton="info" class="w-100 justify-content-center export-toggle-btn export-btn"
+                        (click)="exportDropdown.toggle()" button>
+                        <it-icon name="download" size="sm" class="d-lg-none me-lg-1"></it-icon>
+                        <span class="d-none d-lg-inline">Esporta</span>
+                    </button>
+                    <ng-container list>
+                        <li itDropdownItem (click)="exportChart('image/png')">PNG</li>
+                        <li itDropdownItem (click)="exportChart('application/pdf')">PDF</li>
+                        <li itDropdownItem (click)="exportChart('text/csv')">CSV</li>
+                    </ng-container>
+                </it-dropdown>
+            </div>
+        </div>
+    </div>
+
+    <it-modal #disclaimerModal="itModal" [scrollable]="true" size="lg" alignment="centered">
+        <span modalTitle>Termini e condizioni d'uso del servizio</span>
+        <app-mir-disclaimer-terms />
+        <button footer itButton="primary" type="button" data-bs-dismiss="modal">Chiudi</button>
+    </it-modal>
+</div>

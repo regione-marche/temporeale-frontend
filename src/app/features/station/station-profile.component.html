@@ -1,0 +1,24 @@
+<!--
+SPDX-License-Identifier: EUPL-1.2
+Copyright: 2026 Regione Marche
+-->
+<app-station-profile-details
+  *ngIf="!isLoading && station; else stateTemplate"
+  [station]="station"
+  [stationCode]="stationCode"
+  [fromSource]="profileEntryFrom">
+</app-station-profile-details>
+
+<ng-template #stateTemplate>
+  <section class="page-state" *ngIf="isLoading; else errorTemplate">
+    <it-spinner></it-spinner>
+  </section>
+
+  <ng-template #errorTemplate>
+    <section class="page-state error-state">
+      <h2>Stazione non disponibile</h2>
+      <p>Non è stato possibile caricare l'anagrafica della stazione richiesta.</p>
+      <a itButton="primary" [routerLink]="['/']">Torna alla home</a>
+    </section>
+  </ng-template>
+</ng-template>

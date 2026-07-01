@@ -1,0 +1,233 @@
+<!--
+SPDX-License-Identifier: EUPL-1.2
+Copyright: 2026 Regione Marche
+-->
+<div class="page-container">
+    <!-- Sidebar -->
+    <aside class="sidebar-panel">
+
+        <!-- Accordion Item: Informazioni e Aggiornamento -->
+        <div class="sidebar-accordion-item">
+            <button type="button" class="sidebar-accordion-header d-lg-none" (click)="toggleAccordion('info')"
+                [class.active]="openedAccordion === 'info'" aria-label="Espandi Informazioni">
+                <it-icon name="info-circle" size="sm"></it-icon>
+                <span>Informazioni</span>
+                <it-icon [name]="openedAccordion === 'info' ? 'close' : 'chevron-down'" size="sm"
+                    class="ms-auto accordion-chevron"></it-icon>
+            </button>
+            <div class="sidebar-accordion-content" [class.open]="openedAccordion === 'info'">
+                <div class="pt-3 pt-lg-0">
+                    <div class="mb-4">
+                        <div class="d-flex flex-column gap-2">
+                            <p class="small mb-0 sidebar-page-updated" *ngIf="pageLastUpdatedFormatted">
+                                Pagina aggiornata il: {{ pageLastUpdatedFormatted }}
+                            </p>
+                            <button itButton type="button" [itButton]="view === 'map' ? 'primary' : 'outline-primary'"
+                                (click)="refreshMarkers()" [disabled]="isReloading" [attr.aria-busy]="isReloading"
+                                class="w-100 justify-content-between align-items-center d-flex">
+                                <span>{{ isReloading ? 'Aggiornamento...' : 'Aggiorna' }}</span>
+                                <it-icon name="refresh" size="sm" color="white"
+                                    [class.reload-icon-spinning]="isReloading"></it-icon>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h1 class="h6 mb-1 primary-color">{{env.homePageReale}}</h1>
+                        <p class="small sidebar-realtime-text">{{env.homePagesubreal}}</p>
+                        <button type="button" class="sidebar-disclaimer-link" (click)="disclaimerModal.show()">
+                            Disclaimer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider d-none d-lg-block">
+
+        <!-- Accordion Item: Ricerca -->
+        <div class="sidebar-accordion-item" *ngIf="view === 'map'">
+            <button type="button" class="sidebar-accordion-header d-lg-none" (click)="toggleAccordion('search')"
+                [class.active]="openedAccordion === 'search'" aria-label="Espandi Ricerca">
+                <it-icon name="search" size="sm"></it-icon>
+                <span>Ricerca</span>
+                <it-icon [name]="openedAccordion === 'search' ? 'close' : 'chevron-down'" size="sm"
+                    class="ms-auto accordion-chevron"></it-icon>
+            </button>
+            <div class="sidebar-accordion-content" [class.open]="openedAccordion === 'search'">
+                <div class="form-group mb-4 filtro-stazione pt-0 pb-3 py-lg-0">
+                    <it-search #stationSearch [searchData]="stationSearchData" label="Ricerca stazione"
+                        placeholder="Cerca stazione..." (searchSelectedEvent)="onStationSelected($event)">
+                    </it-search>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider d-none d-lg-block" *ngIf="view === 'map'">
+
+        <!-- Accordion Item: Filtri -->
+        <div class="sidebar-accordion-item" *ngIf="view === 'map'">
+            <button type="button" class="sidebar-accordion-header d-lg-none" (click)="toggleAccordion('filters')"
+                [class.active]="openedAccordion === 'filters'" aria-label="Espandi Filtri">
+                <it-icon name="funnel" size="sm"></it-icon>
+                <span>Filtri</span>
+                <it-icon [name]="openedAccordion === 'filters' ? 'close' : 'chevron-down'" size="sm"
+                    class="ms-auto accordion-chevron"></it-icon>
+            </button>
+            <div class="sidebar-accordion-content" [class.open]="openedAccordion === 'filters'">
+                <div class="form-group mb-4 filtro-sensore py-3 py-lg-0">
+                    <label class="active fw-bold mb-2 d-none d-lg-block" id="sensor-filter-label">Filtra misure</label>
+                    <div class="sensor-icon-grid" role="group" aria-labelledby="sensor-filter-label">
+                        <div class="sensor-icon-btn" *ngFor="let opt of sensorFilterOptions; trackBy: trackBySensor"
+                            [class.sensor-icon-btn--active]="sensorFilter === opt.value"
+                            [attr.aria-pressed]="sensorFilter === opt.value" (click)="selectSensorFilter(opt.value)"
+                            (mousedown)="selectSensorFilter(opt.value)" role="button" tabindex="0"
+                            (keydown.enter)="selectSensorFilter(opt.value)"
+                            (keydown.space)="$event.preventDefault(); selectSensorFilter(opt.value)">
+                            <span class="sensor-icon-btn__icon-wrap" aria-hidden="true">
+                                <i [class]="opt.weatherIconClass + ' sensor-icon-btn__icon-wi'"></i>
+                            </span>
+                            <span class="sensor-icon-btn__label">{{ opt.text }}</span>
+                        </div>
+                    </div>
+
+                    <ng-container *ngIf="isSensorFilterActive">
+                        <div class="form-check marker-value-toggle flex items-center">
+                            <input class="form-check-input" type="checkbox" id="showMarkerValueToggle"
+                                [(ngModel)]="showMarkerValue" (ngModelChange)="renderMarkers()">
+                            <label class="form-check-label" for="showMarkerValueToggle">
+                                Mostra valori
+                            </label>
+                        </div>
+                        <button type="button" itButton="outline-secondary" size="sm" class="w-100 mt-2"
+                            (click)="clearSensorFilter()">
+                            Rimuovi filtro
+                        </button>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+        <hr class="divider d-none d-lg-block" *ngIf="env.usefulLinks.length">
+
+        <!-- Accordion Item: Link Utili -->
+        <div class="sidebar-accordion-item" *ngIf="env.usefulLinks.length">
+            <button type="button" class="sidebar-accordion-header d-lg-none" (click)="toggleAccordion('links')"
+                [class.active]="openedAccordion === 'links'" aria-label="Espandi Link Utili">
+                <it-icon name="link" size="sm"></it-icon>
+                <span>Link Utili</span>
+                <it-icon [name]="openedAccordion === 'links' ? 'close' : 'chevron-down'" size="sm"
+                    class="ms-auto accordion-chevron"></it-icon>
+            </button>
+            <div class="sidebar-accordion-content" [class.open]="openedAccordion === 'links'">
+                <div class="mb-4 py-3 py-lg-0">
+                    <h2 class="h6 mb-1 primary-color d-none d-lg-block">Link utili</h2>
+                    <ul class="list-unstyled small mb-0 useful-links-list">
+                        <li *ngFor="let link of env.usefulLinks; trackBy: trackUsefulLinkByUrl; let i = index"
+                            class="useful-links-list__item" [class.useful-links-list__item--spaced]="i > 0">
+                            <a class="link-primary d-inline-flex align-items-center gap-1" [href]="link.url"
+                                target="_blank" rel="noopener noreferrer">
+                                <span class="flex-shrink-0" aria-hidden="true">
+                                    <it-icon [name]="link.icon" size="sm" color="primary"></it-icon>
+                                </span>
+                                <span>{{ link.label }}</span>
+                                <span class="visually-hidden">. Si apre in una nuova scheda</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div *ngIf="isLoading" class="spinner-container d-flex justify-content-center align-items-center h-100">
+            <it-spinner></it-spinner>
+        </div>
+
+        <div class="map-wrapper" [style.display]="!isLoading && view === 'map' ? 'block' : 'none'">
+            <div id="map" class="map-container"></div>
+        </div>
+
+        <div class="table-wrapper" *ngIf="!isLoading && view === 'table'">
+            <div class="d-flex align-items-end gap-2 gap-lg-3 mb-3">
+                <div class="flex-grow-1 order-1 order-lg-2">
+                    <div class="table-search-wrapper mb-0 filtro-stazione">
+                        <label for="tableStationSearch" class="table-search-label">Filtra stazioni</label>
+                        <input id="tableStationSearch" type="text" class="form-control"
+                            placeholder="Cerca per nome, comune o provincia..." [(ngModel)]="tableSearchTerm">
+                    </div>
+                </div>
+                <button itButton="outline-primary" size="sm" type="button" (click)="switchToMapView()"
+                    class="order-2 order-lg-1 table-view-map-btn mb-1 flex-shrink-0">
+                    <it-icon name="map-marker-circle" size="sm" class="me-lg-1"></it-icon>
+                    <span class="d-none d-lg-inline">Torna alla mappa</span>
+                </button>
+            </div>
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th [attr.aria-sort]="getTableAriaSort('name')">
+                            <button type="button" class="table-sort-btn" (click)="toggleTableSort('name')">
+                                <span>Stazione</span>
+                                <span class="table-sort-indicator"
+                                    [class.table-sort-indicator--active]="tableSortField === 'name'">{{getTableSortIndicator('name')}}</span>
+                            </button>
+                        </th>
+                        <th [attr.aria-sort]="getTableAriaSort('municipality')">
+                            <button type="button" class="table-sort-btn" (click)="toggleTableSort('municipality')">
+                                <span>Comune</span>
+                                <span class="table-sort-indicator"
+                                    [class.table-sort-indicator--active]="tableSortField === 'municipality'">{{getTableSortIndicator('municipality')}}</span>
+                            </button>
+                        </th>
+                        <th [attr.aria-sort]="getTableAriaSort('province')">
+                            <button type="button" class="table-sort-btn" (click)="toggleTableSort('province')">
+                                <span>Prov.</span>
+                                <span class="table-sort-indicator"
+                                    [class.table-sort-indicator--active]="tableSortField === 'province'">{{getTableSortIndicator('province')}}</span>
+                            </button>
+                        </th>
+                        <th scope="col" class="quota-col-head text-center">
+                            <span class="quota-col-head__main">Quota</span>
+                            <span class="quota-col-head__sub">mslm</span>
+                        </th>
+                        <th scope="col">Ultimo aggiornamento</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let s of filteredTableStations">
+                        <td class="fw-bold">{{s.name}}</td>
+                        <td>{{s.municipality || '-'}}</td>
+                        <td>{{s.province}}</td>
+                        <td>{{ s.altitude != null ? s.altitude : '-' }}</td>
+                        <td>{{stationLastUpdateLabel(s)}}</td>
+                        <td>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <a itButton="primary" size="xs" [routerLink]="['/stations', s.code, 'data']"
+                                    [queryParams]="isSensorFilterActive ? { sensor: sensorFilter, from: 'table' } : { from: 'table' }">
+                                    <span class="d-none d-lg-inline">Misure</span>
+                                    <it-icon name="info-circle" size="xs" class="d-lg-none"></it-icon>
+                                </a>
+                                <a itButton="outline-primary" size="xs" [routerLink]="['/stations', s.code, 'profile']"
+                                    [queryParams]="isSensorFilterActive ? { sensor: sensorFilter, from: 'table' } : { from: 'table' }">
+                                    <span class="d-none d-lg-inline">Anagrafica</span>
+                                    <it-icon name="files" size="xs" class="d-lg-none"></it-icon>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <it-modal #disclaimerModal="itModal" [scrollable]="true" size="lg" alignment="centered">
+        <span modalTitle>Termini e condizioni d'uso del servizio</span>
+        <app-mir-disclaimer-terms />
+        <button footer itButton="primary" type="button" data-bs-dismiss="modal">Chiudi</button>
+    </it-modal>
+</div>

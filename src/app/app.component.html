@@ -1,0 +1,87 @@
+<!--
+SPDX-License-Identifier: EUPL-1.2
+Copyright: 2026 Regione Marche
+-->
+<div class="app-shell">
+
+    <it-header [loginStyle]="loginStyle" [light]="light" [showSearch]="search" [sticky]="sticky" [megamenu]="true"
+        [showSlim]="false" [class.no-nav]="!hasNavItems()">
+        <!-- <div slimRightZone class="logo-fixed">
+            <a [href]="env.organizationLink" target="_blank">
+                <img src="assets/logo-rer-xl--grey.png" alt="Logo Organizzazione" style="height: 32px;" />
+            </a>
+        </div> -->
+        <div rightZone class="user-menu-right-zone">
+            <a *ngIf="!isAuth()" itButton="primary" class="btn-full btn-icon" (click)="login()"
+                style="pointer-events: auto; border: none !important; background: transparent !important; color: white !important;"
+                href="javascript:void(0)">
+                <span class="rounded-icon">
+                    <it-icon name="user" color="primary"></it-icon>
+                </span>
+                <span class="d-none d-lg-block">Area riservata</span>
+            </a>
+            <it-dropdown #userDropdown="itDropdown" class="user-menu" *ngIf="isAuth() && greetingName()" mode="link">
+                <span button class="user-greeting" (click)="userDropdown.toggle()">
+                    <it-icon name="user" size="sm" class="user-greeting-icon"></it-icon>
+                    <span class="d-none d-lg-inline">Ciao, {{ greetingName() }}</span>
+                </span>
+                <ng-container list>
+                    <li itDropdownItem (click)="logout()">Esci</li>
+                </ng-container>
+            </it-dropdown>
+        </div>
+        <ng-container brand>
+            <a routerLink="/" queryParamsHandling="preserve" class="it-brand-logo-setup">
+                <img [src]="env.logoUrl" alt="Logo" class="logo-img" />
+                <div class="it-brand-text">
+                    <div class="it-brand-tagline d-none d-md-block">{{ env.headerTitle }}</div>
+                    <div class="it-brand-title">{{ env.headerSubtitle }}</div>
+                </div>
+            </a>
+        </ng-container>
+        <ng-container navItems *ngIf="hasNavItems()">
+            <it-navbar-item *ngIf="isAdminRoute() || isStationDetailRoute()">
+                <a class="nav-link" routerLink="/" queryParamsHandling="preserve">
+                  <span>Home</span>
+                </a>
+            </it-navbar-item>
+            <it-navbar-item *ngIf="!isAdminRoute() && isAdmin()">
+              <a class="nav-link" routerLink="/admin">
+                <span>Admin</span>
+              </a>
+            </it-navbar-item>
+        </ng-container>
+
+
+
+    </it-header>
+
+
+    <main class="main-content">
+        <router-outlet></router-outlet>
+    </main>
+
+    <footer class="it-footer">
+        <!-- <div class="it-footer-main">
+            <div class="container text-center text-md-start">
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <h3 class="footer-title">{{ env.headerTitle }}</h3>
+                        <p>{{ env.headerSubtitle }}</p>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="it-footer-small-prints">
+            <div class="container">
+                <p class="text-center mb-0">
+                    {{ env.footerText }}
+                    <span class="mx-2">|</span>
+                    <a href="javascript:void(0)" (click)="openCookieBanner()">Gestione Preferenze Cookie</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <app-cookie-banner></app-cookie-banner>
+</div>

@@ -1,0 +1,29 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "just-validate/dist/modules/interfaces": [
+        "node_modules/just-validate/dist/modules/interfaces.d.ts"
+      ]
+    },
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2022",
+    "module": "es2022",
+    "useDefineForClassFields": false,
+    "lib": [
+      "es2022",
+      "dom"
+    ],
+    "types": ["node"]
+  },
+  "exclude": [
+    "node_modules/bootstrap-italia/types/**"
+  ]
+}

@@ -1,0 +1,23 @@
+# 1) npm run build -- --configuration production
+# 2) docker compose build && docker compose up -d
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: temporeale-fe:local
+    container_name: temporeale-fe
+    restart: unless-stopped
+    ports:
+      - "4200:80"
+    environment:
+      - BACKEND_URL=http://temporeale-backend:8080
+      - KEYCLOAK_URL=http://temporeale-keycloak:8080
+    networks:
+      - temporeale-net
+
+networks:
+  temporeale-net:
+    name: temporealev2-backend_temporeale-net
+    external: true

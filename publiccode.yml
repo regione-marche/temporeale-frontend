@@ -1,0 +1,51 @@
+publiccodeYmlVersion: "0.4"
+name: Temporeale Frontend
+applicationSuite: Temporeale
+url: "https://github.com/regione-marche/temporeale-frontend"
+landingPage: "https://github.com/regione-marche/temporeale-frontend"
+softwareType: standalone/web
+platforms:
+  - web
+developmentStatus: stable
+softwareVersion: 1.0.0
+releaseDate: "2026-06-30"
+legal:
+  license: EUPL-1.2
+  mainCopyrightOwner: Regione Marche
+  repoOwner: Regione Marche
+maintenance:
+  type: contract
+  contractors:
+    - name: ETG srl
+      until: "2028-06-30"
+  contacts:
+    - name: Supporto Tecnico Regione Marche
+      email: graziano.candelaresi@regione.marche.it
+description:
+  it:
+    shortDescription: Portale web in Angular per il monitoraggio meteorologico della Regione Marche conforme alle linee guida di design AGID.
+    longDescription: |
+      L'applicazione frontend di Temporeale offre al cittadino e agli operatori un'interfaccia 
+      moderna, fluida e accessibile per consultare le stazioni meteorologiche e le relative misurazioni territoriali.
+      
+      Funzionalità principali:
+      - Visualizzazione cartografica interattiva su mappe Leaflet.
+      - Grafici temporali dinamici (storici e tendenze) basati su ECharts.
+      - Area amministrativa protetta tramite Keycloak per la gestione anagrafica e la configurazione dei sensori.
+      - Interfaccia coerente basata su Design Angular Kit (conforme agli standard di Bootstrap Italia e Designers Italia/AgID).
+      - Piena accessibilità conforme ai requisiti della legge italiana (Legge Stanca) e delle linee guida WCAG 2.1 AA (WAI-ARIA, navigabilità da tastiera, contrasti adatti).
+      - Ottimizzazione mobile responsiva ("mobile-first").
+    localisedName: Temporeale Frontend
+    features:
+      - Interfaccia cartografica Leaflet interattiva
+      - Grafici storici meteorologici con ECharts
+      - Layout conforme agli standard di design della PA italiana (Design Angular Kit)
+      - Accessibilità conforme a WCAG 2.1 AA e Legge Stanca
+dependsOn:
+  open:
+    - name: Node.js
+      versionMin: "18"
+    - name: Angular
+      versionMin: "19"
+    - name: Design Angular Kit
+      versionMin: "19"

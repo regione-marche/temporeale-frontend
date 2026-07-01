@@ -1,0 +1,237 @@
+/*
+ * SPDX-License-Identifier: EUPL-1.2
+ * Copyright: 2026 Regione Marche
+ */
+@import url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
+@import url('assets/css/weather-icons.css');
+@import url('assets/css/weather-icons-wind.css');
+
+html {
+  scroll-padding-top: 160px; /* Previene che l'header sticky copra il focus */
+}
+
+body {
+  margin: 0;
+  font-family: 'Titillium Web', sans-serif;
+  overflow-x: hidden;
+}
+
+.it-header-wrapper .it-nav-wrapper .it-brand-wrapper {
+  padding-left: 0 !important;
+}
+
+@media (max-width: 991px) {
+  .it-header-wrapper .it-nav-wrapper .it-brand-wrapper {
+    padding-left: 48px !important;
+  }
+}
+.select-wrapper{
+margin-bottom: 0 !important;
+}
+
+.it-header-wrapper {
+  z-index: 9999 !important;
+}
+
+.modal {
+  z-index: 10050 !important;
+}
+
+.modal-backdrop {
+  z-index: 10040 !important;
+}
+
+.it-header-wrapper,
+.it-header-wrapper .it-header-slim-wrapper,
+.it-header-wrapper .it-header-center-wrapper,
+.it-header-wrapper .it-header-navbar-wrapper {
+  background-color: #0C6AAF !important;
+}
+
+/* Popup mappa Leaflet (HTML generato in TS: stili globali, non encapsulation del componente) */
+.leaflet-popup-content .station-popup {
+  min-width: 12.5rem;
+  max-width: 20rem;
+  margin: 0.15rem 0.25rem 0.35rem;
+  font-family: 'Titillium Web', sans-serif;
+}
+
+.leaflet-popup-content .station-popup__header {
+  margin: 0;
+}
+
+.leaflet-popup-content .station-popup__title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem;
+  color: #0a5a9a;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.leaflet-popup-content .station-popup__meta {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.leaflet-popup-content .station-popup__meta-icon {
+  flex-shrink: 0;
+  display: flex;
+  color: #5b6c7d;
+  margin-top: 0.1rem;
+}
+
+.leaflet-popup-content .station-popup__clock-icon {
+  display: block;
+}
+
+.leaflet-popup-content .station-popup__meta-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.leaflet-popup-content .station-popup__meta-label {
+  display: block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #5a6875;
+  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: 0.15rem;
+}
+
+.leaflet-popup-content .station-popup__meta-value {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #8b949e;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.35;
+}
+
+.leaflet-popup-content .station-popup__divider {
+  height: 1px;
+  background: rgba(24, 59, 86, 0.14);
+  margin: 0.75rem 0 0.65rem;
+}
+
+.leaflet-popup-content .station-popup__section {
+  margin: 0;
+}
+
+.leaflet-popup-content .station-popup__section-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #5a6875;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.leaflet-popup-content .station-popup__rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.leaflet-popup-content .station-popup__row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem 0.5rem;
+  /* padding: 0.42rem 0; */
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+.leaflet-popup-content .station-popup__icon {
+  flex-shrink: 0;
+  width: 1.35rem;
+  text-align: center;
+  line-height: 1;
+}
+
+.leaflet-popup-content .station-popup__icon .wi {
+  font-size: 1.15rem;
+  color: #0c6aaf;
+  vertical-align: middle;
+}
+
+.leaflet-popup-content .station-popup__row:last-child {
+  border-bottom: none;
+  padding-bottom: 0.15rem;
+}
+
+.leaflet-popup-content .station-popup__label {
+  color: #455a64;
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  padding-right: 0.35rem;
+  align-self: baseline;
+}
+
+.leaflet-popup-content .station-popup__value {
+  text-align: right;
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+  align-self: baseline;
+}
+
+.leaflet-popup-content .station-popup__value-num {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.leaflet-popup-content .station-popup__unit {
+  font-weight: 500;
+  color: #5a6875;
+  font-size: 0.8125rem;
+}
+
+.leaflet-popup-content .station-popup__note-heading {
+  display: block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.leaflet-popup-content .station-popup__note-body {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: #455a64;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.leaflet-popup-content .station-popup__actions {
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  /* border-top: 1px solid rgba(24, 59, 86, 0.1); */
+  flex-wrap: nowrap;
+}
+
+.leaflet-popup-content .station-popup__actions .btn {
+  text-decoration: none;
+  width: 100%;
+  /* font-size: 0.72rem; */
+  font-weight: 600;
+  /* padding: 0.28rem 0.55rem; */
+  padding: 0.75rem 1rem;
+  line-height: 1.2;
+  border-radius: 4px;
+}
+
+
+body.navbar-open .user-menu-right-zone {
+  display: none !important;
+}
+
+/* Accessibility contrast override */
+.text-muted {
+  color: #5a6875 !important;
+}

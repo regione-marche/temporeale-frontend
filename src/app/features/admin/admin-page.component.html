@@ -1,0 +1,154 @@
+<!--
+SPDX-License-Identifier: EUPL-1.2
+Copyright: 2026 Regione Marche
+-->
+<section class="p-4">
+    <h1 class="it-page-title mb-4">Gestione stazioni</h1>
+    <div class="grid-layout">
+        <it-card>
+            <!-- <div class="it-card-header-wrapper">
+                <h3 class="it-card-title">Stazioni</h3>
+            </div> -->
+            <div class="it-card-body">
+                <div class="p-3 d-flex flex-column gap-3">
+                    <it-input label="Cerca stazione..." [(ngModel)]="searchText" name="search"></it-input>
+
+                    <div class="visibility-filters d-flex align-items-center gap-2 flex-wrap">
+                        <span class="small text-muted me-2">Stato visibilità stazioni:</span>
+                        <button [itButton]="visibilityFilter === 'all' ? 'primary' : 'outline-primary'" size="xs"
+                            (click)="visibilityFilter = 'all'">Tutte</button>
+                        <button [itButton]="visibilityFilter === 'visible' ? 'success' : 'outline-success'" size="xs"
+                            (click)="visibilityFilter = 'visible'">Visibili</button>
+                        <button [itButton]="visibilityFilter === 'hidden' ? 'secondary' : 'outline-secondary'" size="xs"
+                            (click)="visibilityFilter = 'hidden'">Nascoste</button>
+                    </div>
+                </div>
+
+                <div *ngIf="loadingStations" class="d-flex justify-content-center p-5">
+                    <it-spinner label="Caricamento stazioni..."></it-spinner>
+                </div>
+
+                <it-list *ngIf="!loadingStations">
+                    <li itListItem *ngFor="let s of paginatedStations">
+                        <div class="it-list-item-content w-100 d-flex">
+
+
+                            <div class="station-photo-admin w-19rem h-13rem me-2">
+                                <input type="file" [id]="'photo-input-' + s.code"
+                                    (change)="onFileSelected($event, s)" accept="image/*"
+                                    style="display: none;">
+                                <button class="image-upload-btn"
+                                    [class.loading]="uploadingStationCode === s.code"
+                                    (click)="triggerFileUpload(s.code)">
+                                    <img [src]="getStationImageUrl(s)" alt="Station Preview"
+                                        class="photo-preview">
+                                    <div class="upload-overlay">
+                                        <it-icon name="camera" size="sm" color="white"></it-icon>
+                                        <span>{{ (s.imageName || s.stationPhoto?.photo ||
+                                            localPhotoCache.has(s.code!)) ? 'Cambia' : 'Carica' }}</span>
+                                    </div>
+                                    <div *ngIf="uploadingStationCode === s.code" class="upload-spinner">
+                                        <it-spinner size="sm" color="white"></it-spinner>
+                                    </div>
+                                </button>
+                                <div class="delete-photo-action"
+                                    *ngIf="s.imageName || s.stationPhoto?.photo || localPhotoCache.has(s.code!)">
+                                    <button class="btn-delete" (click)="deletePhoto($event, s)"
+                                        title="Elimina foto">
+                                        <it-icon name="delete" size="sm"
+                                            style="color: #d9364f !important;"></it-icon>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="w-100">
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center gap-3"   [class]="s.stationVisibility?.visible ? 'station-row--visible' : 'bg-red-500'">
+                                        <strong class="h6 mb-0"> {{s.code}} - {{s.name}}</strong>
+                                        <div class="d-flex align-items-center gap-2 flex-nowrap">
+                                            <span class="small fw-bold" [class.text-success]="s.stationVisibility?.visible"
+                                                [class.text-muted]="!s.stationVisibility?.visible"
+                                                style="white-space: nowrap;">
+                                                {{ s.stationVisibility?.visible ? 'Visibile' : 'Nascosta' }}
+                                            </span>
+                                            <it-checkbox [toggle]="true" [ngModel]="!!s.stationVisibility?.visible"
+                                                (ngModelChange)="toggleVisibility(s)" [attr.aria-label]="'Visibilità stazione ' + s.code">
+                                            </it-checkbox>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="d-flex flex-column align-items-end gap-2">
+    
+                                            <div class="d-flex flex-row gap-2">
+                                                <button itButton="outline-primary" size="sm" (click)="startEdit(s)"
+                                                    [disabled]="editingStationCode === s.code">
+                                                    <it-icon name="pencil" size="xs"></it-icon>
+                                                    Note
+                                                </button>
+                                                <a itButton="outline-secondary" size="xs"
+                                                    [routerLink]="['/stations', s.code, 'profile']">
+                                                    <it-icon name="files" size="xs"></it-icon>
+                                                    Anagrafica
+                                                </a>
+                                            </div>
+    
+    
+                                     
+    
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <!-- Sensor visibility toggles -->
+                                <div class="sensor-visibility-container" *ngIf="getStandardAnalogs(s).length > 0">
+                                    <div class="sensor-visibility-title">Visibilità Sensori:</div>
+                                    <div class="sensor-grid">
+                                        <div *ngFor="let a of getStandardAnalogs(s)" class="sensor-item">
+                                            <span class="sensor-label">{{getAnalogName(a)}}</span>
+                                            <it-checkbox [toggle]="true" [ngModel]="!!a.analogVisibility?.visible"
+                                                (ngModelChange)="toggleAnalogVisibility(s, a)" [attr.aria-label]="'Visibilità sensore ' + getAnalogName(a)">
+                                            </it-checkbox>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <!-- Note Section (Display or Edit) -->
+                                <div class="mt-3">
+                                    <div class="text-muted" *ngIf="editingStationCode !== s.code">
+                                        <em>Note: {{ s.note || 'Nessuna nota' }}</em>
+                                    </div>
+    
+                                    <div class="mt-2" *ngIf="editingStationCode === s.code">
+                                        <it-input label="Modifica note" [(ngModel)]="editingNoteValue"
+                                            name="noteEdit"></it-input>
+                                        <div class="mt-2 d-flex gap-2">
+                                            <button itButton="success" size="sm" (click)="saveNote(s)">Salva</button>
+                                            <button itButton="outline-danger" size="sm"
+                                                (click)="cancelEdit()">Annulla</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+                    </li>
+                </it-list>
+
+                <div class="d-flex justify-content-center mt-4" *ngIf="totalPages > 1">
+                    <it-pagination 
+                        [currentPage]="currentPage - 1" 
+                        [pageNumbers]="totalPages" 
+                        (pageEvent)="onPageChange($event)">
+                    </it-pagination>
+                </div>
+
+                <p *ngIf="filteredStations.length === 0" class="p-3 text-muted">Nessuna stazione trovata</p>
+            </div>
+        </it-card>
+    </div>
+</section>

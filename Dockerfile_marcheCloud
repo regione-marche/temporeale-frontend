@@ -1,0 +1,18 @@
+FROM node:20-alpine AS node-builder
+WORKDIR /src
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build -- --configuration production
+
+FROM nginx:alpine
+
+# Set default environment variables for backend and Keycloak
+ENV BACKEND_URL=http://host.docker.internal:8083
+ENV KEYCLOAK_URL=http://host.docker.internal:8180
+
+COPY --from=node-builder /src/dist/temporeale-fe /usr/share/nginx/html
+# Copy the template to the templates directory so envsubst runs on startup
+COPY nginx.site.template /etc/nginx/templates/default.conf.template
+
+CMD ["nginx", "-g", "daemon off;"]

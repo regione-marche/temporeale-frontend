@@ -1,0 +1,18 @@
+/*
+ * SPDX-License-Identifier: EUPL-1.2
+ * Copyright: 2026 Regione Marche
+ */
+:host {
+  display: block;
+  min-height: 0;
+}
+
+.disclaimer-scroll p {
+  white-space: pre-line;
+}
+
+/* Area scroll limitata solo sulla pagina disclaimer (card); in modale usa lo scroll del modal-body */
+:host(.mir-disclaimer-terms--contained) .disclaimer-scroll {
+  max-height: 38vh;
+  overflow: auto;
+}

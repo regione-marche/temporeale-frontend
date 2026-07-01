@@ -1,0 +1,32 @@
+stages:
+  - publish
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+  # Sostituisci con il tuo URL ECR reale
+  ECR_URL: "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/temporeale-fe"
+
+publish_image:
+  stage: publish
+  image:
+    name: amazon/aws-cli
+    entrypoint: [""]
+  services:
+    - docker:24.0.5-dind
+  script:
+    # 1. Installazione Docker nell'immagine AWS CLI
+    - amazon-linux-extras install docker
+
+    # 2. Login a ECR
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_URL
+
+    # 3. Build con caching (velocizza le build successive)
+    - docker pull $ECR_URL:latest || true
+    - docker build --cache-from $ECR_URL:latest -t $ECR_URL:$CI_COMMIT_SHORT_SHA -t $ECR_URL:latest .
+
+    # 4. Push dei tag
+    - docker push $ECR_URL:$CI_COMMIT_SHORT_SHA
+    - docker push $ECR_URL:latest
+  only:
+    - main

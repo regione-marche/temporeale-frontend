@@ -1,0 +1,87 @@
+<!--
+SPDX-License-Identifier: EUPL-1.2
+Copyright: 2026 Regione Marche
+-->
+<section class="profile-shell">
+  <header class="profile-hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Anagrafica stazione</p>
+      <h1>{{ station.name || ('Stazione ' + resolvedStationCode) }}</h1>
+      <p class="hero-subtitle">{{ headerSubtitle }}</p>
+    </div>
+
+    <div class="hero-actions">
+      <ng-container *ngIf="isFromTable; else backToMapTpl">
+        <a itButton="primary" [routerLink]="['/']" [queryParams]="{ view: 'table', from: null }"
+          queryParamsHandling="merge">Torna a Elenco</a>
+      </ng-container>
+      <ng-template #backToMapTpl>
+        <a itButton="primary" [routerLink]="['/']" queryParamsHandling="preserve">Torna alla mappa</a>
+      </ng-template>
+      <a itButton="primary" [routerLink]="['/stations', resolvedStationCode, 'data']"
+        [queryParams]="{ from: 'profile' }" queryParamsHandling="merge">Dettaglio stazione</a>
+      <a *ngIf="isAdmin()" itButton="primary" [routerLink]="['/admin']">Admin</a>
+    </div>
+  </header>
+
+  <!-- <div class="summary-strip">
+    <div class="summary-item" *ngFor="let item of summaryItems">
+      <span class="summary-label">{{ item.label }}</span>
+      <strong class="summary-value">{{ item.value }}</strong>
+    </div>
+  </div> -->
+
+  <div class="content-grid">
+    <section class="profile-card">
+      <h2>Dati identificativi</h2>
+      <div class="station-image-wrapper">
+        <img class="station-image" [src]="getStationImageUrl()"
+          [alt]="'Immagine della stazione ' + (station.name || resolvedStationCode)">
+      </div>
+
+      <dl class="info-list">
+        <div class="info-row" *ngFor="let item of identityFields">
+          <dt>{{ item.label }}</dt>
+          <dd>{{ item.value }}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="profile-card">
+      <h2>Posizione</h2>
+      <dl class="info-list">
+        <div class="info-row" *ngFor="let item of positionFields">
+          <dt>{{ item.label }}</dt>
+          <dd>{{ item.value }}</dd>
+        </div>
+      </dl>
+
+      <h2 class="section-title">Inquadramento idrografico</h2>
+      <dl class="info-list section-list">
+        <div class="info-row" *ngFor="let item of hydroFields">
+          <dt>{{ item.label }}</dt>
+          <dd>{{ item.value }}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- <section class="profile-card">
+      <h2>Sensori standard</h2>
+      <div *ngIf="sensorSnapshot.length > 0; else emptySensors" class="sensor-list">
+        <div class="sensor-row" *ngFor="let analog of sensorSnapshot">
+          <span>{{ analogLabel(analog) }}</span>
+          <strong>{{ analogValueLabel(analog) }}</strong>
+        </div>
+      </div>
+      <ng-template #emptySensors>
+        <p class="empty-state">Nessuna misura standard disponibile per questa stazione.</p>
+      </ng-template>
+    </section> -->
+
+    <section class="profile-card profile-card-wide">
+      <h2>Note</h2>
+      <p *ngIf="noteText !== '-'" class="note-text">{{ noteText }}</p>
+      <p *ngIf="noteText === '-'" class="note-text" style="font-style: oblique;">Nessuna nota presente</p>
+    </section>
+  </div>
+</section>

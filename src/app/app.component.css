@@ -1,0 +1,286 @@
+/*
+ * SPDX-License-Identifier: EUPL-1.2
+ * Copyright: 2026 Regione Marche
+ */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.main-content {
+  padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-img {
+  height: 50px;
+  margin-right: 16px;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+
+@media (max-width: 767px) {
+  .logo-img {
+    height: 40px;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 575px) {
+  .logo-img {
+    height: 32px;
+    margin-right: 8px;
+  }
+}
+
+.it-brand-logo-setup {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 4px 0;
+}
+
+.it-brand-text {
+  line-height: 1.1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.it-brand-title {
+  color: white;
+  /* Conserving user color choice */
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 2px;
+}
+
+.it-brand-tagline {
+  color: white;
+  /* Conserving user color choice */
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: normal;
+}
+
+@media (max-width: 991px) {
+  .it-brand-title {
+    font-size: 1.1rem;
+  }
+
+  .it-brand-tagline {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .it-brand-title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .it-brand-title {
+    font-size: 0.9rem;
+    /* Back to readable size */
+    white-space: normal;
+  }
+
+  .it-brand-tagline {
+    font-size: 0.7rem;
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 375px) {
+  .it-brand-title {
+    font-size: 0.8rem;
+    /* Back to readable size */
+  }
+
+  .it-brand-tagline {
+    font-size: 0.65rem;
+    max-width: 200px;
+  }
+}
+
+.nav-item {
+  cursor: pointer;
+}
+
+.custom-navbar-toggler {
+  border: none;
+  background: transparent;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  /* Conserving user color choice for text */
+}
+
+
+
+/* Ensure the custom burger in the right zone remains visible on mobile */
+.it-right-zone .custom-navbar-toggler {
+  display: flex !important;
+}
+
+@media (min-width: 992px) {
+  .it-right-zone .custom-navbar-toggler {
+    display: none !important;
+  }
+}
+
+.custom-navbar-toggler it-icon {
+  width: 24px;
+  height: 24px;
+}
+
+:host ::ng-deep it-header.no-nav .custom-navbar-toggler,
+:host ::ng-deep it-header.no-nav .it-right-zone .custom-navbar-toggler {
+  display: none !important;
+}
+
+.user-greeting {
+  color: white;
+  font-weight: 600;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.user-menu {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.user-menu-right-zone {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 10;
+}
+
+.logo-fixed {
+  position: fixed;
+  top: 15px;
+  left: 16px;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  pointer-events: auto;
+}
+
+:host ::ng-deep .it-header-center-content-wrapper {
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+:host ::ng-deep .it-brand-wrapper {
+  margin-right: auto;
+}
+
+:host ::ng-deep .it-header-center-wrapper .it-right-zone {
+  align-items: flex-end;
+}
+
+/* Altezza sul contenuto: evita vuoto sopra la navbar quando si usa align-items: flex-end sulla riga logo */
+:host ::ng-deep .it-header-center-wrapper {
+  height: auto !important;
+  min-height: 0;
+  padding-top: 10px;
+  padding-bottom: 4px;
+}
+
+:host ::ng-deep .it-header-center-wrapper.it-small-header {
+  min-height: 0;
+  padding-bottom: 2px;
+}
+
+/* Prevent brand block from shifting to the center as container max-width changes */
+:host ::ng-deep .it-header-center-wrapper .container,
+:host ::ng-deep .it-header-navbar-wrapper .container {
+  max-width: none !important;
+  width: 100% !important;
+  padding-left: 0px !important;
+  padding-right: 10px !important;
+}
+
+@media (min-width: 992px) {
+  :host ::ng-deep .it-header-center-wrapper .container,
+  :host ::ng-deep .it-header-navbar-wrapper .container {
+    padding-left: 24px !important;
+  }
+}
+
+.user-menu-caret {
+  transition: transform 0.2s ease;
+}
+
+.user-menu.show .user-menu-caret {
+  transform: rotate(180deg);
+}
+
+.user-menu .dropdown-toggle {
+  color: white;
+  text-decoration: none;
+}
+
+.user-menu .dropdown-toggle:after {
+  display: none;
+}
+
+.user-menu .dropdown-menu {
+  right: 0;
+  left: auto;
+}
+
+.nav-link {
+  position: relative;
+  transition: all 0.2s;
+}
+
+.nav-link.active {
+  color: white !important;
+  font-weight: 700;
+}
+
+/* .nav-link.active::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+} */
+
+.it-footer-small-prints {
+  /* border-top: 1px solid rgba(255, 255, 255, 0.1); */
+  padding: 20px 0;
+  background-color: #034158;
+  color: white;
+}
+
+.it-footer-small-prints .container p{
+ line-height: 1.3;
+}
+  
+
+.footer-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}

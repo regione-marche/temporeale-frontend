@@ -1,0 +1,265 @@
+/*
+ * SPDX-License-Identifier: EUPL-1.2
+ * Copyright: 2026 Regione Marche
+ */
+:host {
+  display: block;
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top right, rgba(12, 106, 175, 0.12), transparent 28%),
+    linear-gradient(180deg, #f6f9fc 0%, #eef4f8 100%);
+}
+
+.profile-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.profile-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.75rem;
+  border-radius: 24px;
+  background: #0C6AAF;
+  color: #fff;
+  box-shadow: 0 18px 40px rgba(12, 106, 175, 0.2);
+}
+
+/* Adattiamo i pulsanti al nuovo sfondo blu */
+:host ::ng-deep .hero-actions .btn-outline-primary {
+  color: #fff;
+  border-color: #fff;
+}
+:host ::ng-deep .hero-actions .btn-outline-primary:hover,
+:host ::ng-deep .hero-actions .btn-outline-primary:focus {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+:host ::ng-deep .hero-actions .btn-primary {
+  background-color: #fff;
+  color: #0C6AAF;
+  border-color: #fff;
+}
+:host ::ng-deep .hero-actions .btn-primary:hover,
+:host ::ng-deep .hero-actions .btn-primary:focus {
+  background-color: #eaf3fb;
+  color: #0C6AAF;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.hero-copy h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1.05;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.hero-subtitle {
+  margin: 0.75rem 0 0;
+  font-size: 1rem;
+  opacity: 0.92;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.summary-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 1.5rem;
+}
+
+.summary-item,
+.profile-card {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(12, 106, 175, 0.12);
+  box-shadow: 0 14px 28px rgba(45, 86, 122, 0.08);
+}
+
+.summary-item {
+  padding: 1rem 1.1rem;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.summary-label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #5f7286;
+}
+
+.summary-value {
+  font-size: 1.1rem;
+  color: #183b56;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.profile-card {
+  grid-column: span 6;
+  border-radius: 20px;
+  padding: 1.35rem;
+}
+
+.profile-card-wide {
+  grid-column: 1 / -1;
+}
+
+.profile-card h2 {
+  margin: 0 0 1rem;
+  color: #0c6aaf;
+  font-size: 1.1rem;
+}
+
+.section-title {
+  margin-top: 1.5rem !important;
+}
+
+.section-list {
+  margin-top: 0.25rem;
+}
+
+.station-image-wrapper {
+  margin-bottom: 1rem;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #dfeaf2 0%, #f7fbfe 100%);
+  border: 1px solid #d7e4ee;
+}
+
+.station-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 450px;
+  object-fit: contain;
+  background-color: #f8f9fa;
+}
+
+
+.info-list {
+  margin: 0;
+}
+
+.info-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 150px) 1fr;
+  gap: 0.85rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #e7eef4;
+}
+
+.info-row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.info-row dt {
+  font-weight: 700;
+  color: #476076;
+}
+
+.info-row dd {
+  margin: 0;
+  color: #1a2b3b;
+}
+
+.sensor-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.sensor-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #e7eef4;
+}
+
+.sensor-row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.sensor-row span {
+  color: #476076;
+}
+
+.sensor-row strong {
+  color: #0c6aaf;
+  text-align: right;
+}
+
+.note-text,
+.empty-state {
+  margin: 0;
+  color: #334e68;
+  line-height: 1.6;
+}
+
+@media (max-width: 991px) {
+  .profile-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .summary-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-card {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .profile-shell {
+    padding: 1rem 0.75rem 2rem;
+  }
+
+  .profile-hero,
+  .profile-card {
+    padding: 1.1rem;
+    border-radius: 18px;
+  }
+
+  .info-row {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .sensor-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sensor-row strong {
+    text-align: left;
+  }
+}
