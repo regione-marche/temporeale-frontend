@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: temporeale-fe:local
+    #image: temporeale-fe:local
     container_name: temporeale-fe
     restart: unless-stopped
     ports:
@@ -19,5 +19,5 @@ services:
 
 networks:
   temporeale-net:
-    name: temporealev2-backend_temporeale-net
+    name: temporeale-backend_temporeale-net
     external: true

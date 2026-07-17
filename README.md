@@ -27,7 +27,7 @@ Client (Browser) ──[HTTP REST JSON]──> Temporeale Backend ──> Databa
 ```
 
 Per maggiori dettagli sull'architettura generale del sistema, consulta il documento di dettaglio:
-*   **Architettura di Progetto**: [ARCHITETTURA.md](file:///c:/Users/mbardi/Progetti/temporeale/temporealev2-frontend/docs/ARCHITETTURA.md)
+*   **Architettura di Progetto**: [ARCHITETTURA.md](docs/ARCHITETTURA.md)
 
 ---
 
@@ -101,15 +101,11 @@ L'output della build verrà creato all'interno della directory `dist/temporeale/
 ### Esecuzione tramite Docker Compose
 Il frontend può essere eseguito containerizzato all'interno di un server web **Nginx**:
 
-1. **Compilazione dei file statici** (necessaria per generare la cartella `dist/` che verrà copiata nel container):
+1. **Creazione della rete Docker condivisa** (se il backend non è già stato avviato, la rete esterna deve essere creata manualmente):
    ```bash
-   npm run build
+   docker network create temporeale-backend_temporeale-net
    ```
-2. **Creazione della rete Docker condivisa** (se il backend non è già stato avviato, la rete esterna deve essere creata manualmente):
-   ```bash
-   docker network create temporealev2-backend_temporeale-net
-   ```
-3. **Avvio dei container**:
+2. **Avvio dei container**:
    ```bash
    docker compose up -d --build
    ```
@@ -136,6 +132,9 @@ Il frontend può essere eseguito containerizzato all'interno di un server web **
 ### Soggetto Incaricato del Mantenimento
 *   **ETG srl**
 
+### Autori e Contributori
+L'attribuzione disponibile è riportata nel file [AUTHORS.md](AUTHORS.md).
+
 ### Segnalazioni di Sicurezza
 > [!IMPORTANT]
 > Se rilevi una vulnerabilità di sicurezza all'interno del codice, **NON utilizzare l'issue tracker pubblico** di GitHub per segnalarla. Invia invece una segnalazione riservata e cifrata al seguente indirizzo email di sicurezza:
@@ -146,4 +145,4 @@ Il frontend può essere eseguito containerizzato all'interno di un server web **
 ## ⚖️ Licenza
 
 Questo software è distribuito sotto la licenza **European Union Public Licence (EUPL) v. 1.2**.
-Per maggiori dettagli, consulta il testo completo all'interno del file [LICENSE](file:///c:/Users/mbardi/Progetti/temporeale/temporealev2-frontend/LICENSE) presente nella root del repository.
+Per maggiori dettagli, consulta il testo completo all'interno del file [LICENSE](LICENSE) presente nella root del repository.
