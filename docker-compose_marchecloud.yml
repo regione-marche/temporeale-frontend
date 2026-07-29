@@ -1,5 +1,5 @@
 version: '3.8'
-
+name: temporeale-frontend-stack
 services:
   frontend:
     # Se vuoi costruire l'immagine ogni volta:
@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile_marcheCloud
     # Oppure usa l'immagine taggata se preferisci
-    # image: temporeale-fe
+    image: temporeale-fe:local
     container_name: temporeale-fe
     restart: unless-stopped
     ports:

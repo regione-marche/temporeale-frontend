@@ -16,7 +16,7 @@ export const environment = {
     }
   ] satisfies UsefulLink[],
   // keycloakUrl: 'http://localhost:8180',
-  keycloakUrl: 'https://marchetemporeale.etghosting.it/keycloak/',
+  keycloakUrl: 'https://retemir.regione.marche.it/keycloak/',
   headerTitle: 'PROTEZIONE CIVILE - Centro Funzionale Multirischi',
   headerSubtitle: 'RETE MIR - Rete Meteo Idropluviometrica Regionale',
   logoUrl: 'assets/logomarche.jpg',

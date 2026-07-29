@@ -1,12 +1,13 @@
 # 1) npm run build -- --configuration production
 # 2) docker compose build && docker compose up -d
+name: temporeale-frontend-stack
 
 services:
   frontend:
     build:
       context: .
       dockerfile: Dockerfile
-    #image: temporeale-fe:local
+    image: temporeale-fe:local
     container_name: temporeale-fe
     restart: unless-stopped
     ports:

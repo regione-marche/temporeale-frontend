@@ -58,7 +58,7 @@ export class StationProfileDetailsComponent {
     return [
       // { label: 'Codice', value: this.formatValue(this.resolvedStationCode) },
       { label: 'Nome stazione', value: this.formatValue(this.station.name) },
-      { label: 'Localita', value: this.formatValue(this.station.locality) },
+      { label: 'Località', value: this.formatValue(this.station.locality) },
       { label: 'Comune', value: this.formatValue(this.station.municipality) },
       { label: 'Provincia', value: this.formatValue(this.station.province) }
     ];
